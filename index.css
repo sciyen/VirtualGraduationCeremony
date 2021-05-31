@@ -156,7 +156,8 @@ html, body {
 
 .wrapper .page.page1 {
   background-color: #24353a;
-  background-image: linear-gradient(10deg, #24353a 20%, #5471B9 80%);
+  background-image: linear-gradient(10deg, #251153 20%, #5471B9 80%);
+  /*background-image: linear-gradient(10deg, #303A52 20%, #574B90 80%);*/
 }
 
 .wrapper .page.page2 {
@@ -480,11 +481,19 @@ li p, ul p, ul h5{
   color: rgb(252, 252, 252);
 }
 
+
+li p, ul p{
+  font-size: 1.2em;
+}
+
 .card{
   padding: 2em;
-  background-color: hsla(276, 100%, 64%, 0.7);
+  background-color: hsla(357, 100%, 62%, 0.719);
 }
 
 .div-center{
+  /*margin: auto;*/
+  margin: auto;
+  height: 100%;
   padding: 5% 0 5% 0;
 }

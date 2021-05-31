@@ -60,6 +60,21 @@ $(document).ready(function () {
         }
     });
 
+    let touch_start_y;
+    $(document).on('touchstart', e => {
+        touch_start_y = e.touches[0].pageY;
+    });
+    $(document).on('touchmove', e => { //touchmove works for iOS, I don't know if Android supports it
+        let offset = e.touches[0].pageY - touch_start_y;
+        if (!scrolling) {
+            if (offset > 0) {
+                navigateUp();
+            } else {
+                navigateDown();
+            }
+        }
+    });
+
     /**************************
     ***** RIGHT NAVIGATION ****
     **************************/
