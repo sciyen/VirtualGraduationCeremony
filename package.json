@@ -5,6 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "google-spreadsheet": "^3.1.15",
+    "googleapis": "39",
     "socket.io": "^4.1.2"
   }
 }

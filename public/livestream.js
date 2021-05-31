@@ -18,6 +18,16 @@ function close_peer_connection(){
     }
 }
 
+function terminate_broadcasting(){
+    broadcastConns[id].close();
+    delete broadcastConns[id];
+    socket.emit("terminate_broadcasting");
+}
+
+function start_broadcasting(){
+    socket.emit("broadcaster");
+}
+
 function init(socket) {
     for (var i = 0; i < max_video; i++) {
         video_container.push(document.querySelector("video#v"+i));

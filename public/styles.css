@@ -1,6 +1,20 @@
-html {
-    overflow: hidden;
-    height: 100%;
+html{
+	background: linear-gradient(360deg, #CCCCFF 0%, #FFCCCC 100%);
+	background: -moz-linear-gradient(360deg, #CCCCFF 0%, #FFCCCC 100%);
+	background: -webkit-linear-gradient(360deg, #CCCCFF 0%, #FFCCCC 100%);
+	background: -o-linear-gradient(360deg, #CCCCFF 0%, #FFCCCC 100%);
+
+    transition-duration: 0.4s;
+}
+
+body{
+    background-color: transparent;
+}
+
+html, body{
+    font-family:Microsoft JhengHei;
+    width: 100%;
+    height: 100%
 }
   
 video {
@@ -9,5 +23,43 @@ video {
     display: block;
     object-fit: cover;
 }
-  
 
+.hide{
+    display:none;
+}
+  
+img{
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    object-fit:contain;
+}
+
+.div-present{
+    width:100px;
+    height: 100px;
+}
+
+.div-present p{
+    position: relative;
+    bottom: 15px;
+    z-index: 2;
+    text-align: center;
+}
+
+.timeline-div{
+    margin: 5px;
+    padding: 2px 5px 2px 5px;
+    display: flex;
+    border: 1px solid white;
+    border-radius: 5px;
+    min-width: 280px;
+}
+.timeline-div h5{
+    margin-right: 5px;
+    display: inline-block;
+    width: 20%;
+    min-width: 65px;
+    height: 100%;
+    border-right: 1px solid white;
+}
