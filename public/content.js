@@ -7,9 +7,9 @@ let tassel_list = []
 
 // Media contrains
 const constraints = {
-    video: { facingMode: "user" }
+    video: { facingMode: "user" },
     // Uncomment to enable audio
-    // audio: true,
+    audio: true,
 };
 
 navigator.mediaDevices
@@ -27,14 +27,22 @@ window.onunload = window.onbeforeunload = () => {
 }
 
 function bind_video_stream(sid, tassel, stream){
-    for(const [idx, id] in tassel.entries()){
-        if (id == sid){
-            $('video#student-cam-'+idx).srcObject = stream;
-        }
-        else{
-            console.log('video can not find a proper place.' + sid)
-            console.log(data[0])
-        }
+    console.log(tassel)
+    if (sid == tassel['Teacher'])
+        $('video#teacher-cam')[0].srcObject = stream;
+    else{ 
+        tassel['Students'].forEach((id, idx)=>{
+            console.log("comparing")
+            console.log(id)
+            console.log(sid)
+            if (id == sid){
+                $('video#student-cam-'+idx)[0].srcObject = stream;
+            }
+            else{
+                console.log('video can not find a proper place.' + sid)
+                console.log(tassel)
+            }
+        })
     }
 }
 
@@ -70,7 +78,7 @@ $(document).ready(() => {
 
 
         init(socket, self_id, (sid, stream)=>{
-            bind_video_stream(sid, tassel_list[0], steam);
+            bind_video_stream(sid, tassel_list[0], stream);
         })
     })
 
@@ -82,15 +90,19 @@ $(document).ready(() => {
     socket.on("update_tassel_list", (data) => {
         /*tassel_list = data;*/
         draw_timeline('#TimelineContainer', user_table, data);
+        console.log (`Current tassel:`)
+        console.log (data[0])
+        console.log(`user: ${self_id}`)
         
         if (self_id == data[0].Teacher){
             //Teacher broadcast
-            $("video#teacher-cam").srcObject = video.srcObject;
+            $("#teacher-cam")[0].srcObject = video.captureStream();
             start_broadcasting();
         }
-        else if (self_id in data[0].Students){
+        else if (data[0].Students.includes(self_id)){
             // Students broadcast
-            bind_video_stream(self_id, data[0], video.srcObject);
+            console.log("start broadcasting as student")
+            bind_video_stream(self_id, data[0], video.captureStream());
             start_broadcasting();
         }
         else{
@@ -98,8 +110,6 @@ $(document).ready(() => {
             // Arrange watchers
         }
     })
-
-    append_student_lsit();
 
     /*socket.on('update-tassel', (count)=>{
         console.log('get tassel')

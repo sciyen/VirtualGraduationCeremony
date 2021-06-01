@@ -63,8 +63,11 @@ io.sockets.on("connection", socket => {
         console.log(`Get watcher request: ${socket.id}`);
     });
     socket.on("disconnect", () => {
-        for (const [key, value] of Object.entries(broadcaster)) {
-            socket.to(value).emit("disconnectPeer", socket.id);
+        if (Object.keys(broadcaster).length <= 0){
+            console.log("Disconnect to all");
+            for (const [key, value] of Object.entries(broadcaster)) {
+                socket.to(value).emit("disconnectPeer", socket.id);
+            }
         }
     });
     socket.on("terminate_broadcasting", ()=>{
@@ -118,7 +121,7 @@ app.get("/initialization", (req, res)=>{
 })
 
 app.get("/", (req, res)=>{
-    redirect('content.html');
+    res.redirect('content.html');
 })
 app.get("/content.html", (req, res, next)=>{
     if (req.session.name === undefined)

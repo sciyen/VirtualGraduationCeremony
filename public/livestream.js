@@ -19,8 +19,10 @@ function close_peer_connection(){
 }
 
 function terminate_broadcasting(){
-    broadcastConns[id].close();
-    delete broadcastConns[id];
+    for (const [key, value] of Object.entries(broadcastConns)){
+        broadcastConns[id].close();
+        delete broadcastConns[id];
+    }
     socket.emit("terminate_broadcasting");
 }
 

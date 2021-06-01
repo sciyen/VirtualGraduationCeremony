@@ -9,14 +9,13 @@ function update_tassel(data, count){
 }
 
 $(document).ready(()=>{
-    socket.on("update_user_table", (data) => {
-        user_table = data;
-        socket.emit('request_tassel_list')
-    })
-    socket.on("update_tassel_list", (data) => {
+    $.getJSON("/initialization", data=>{
+        self_id = data['id'];
+        user_table = data['user_table'];
+        tassel_list = data['tassel_list'];
+
         console.log(data)
-        tassel_list = data;
-        update_tassel(data, tassel_count);
+        update_tassel(tassel_list, tassel_count);
     })
 
     $("#btn-tassel-next").click(()=>{

@@ -29,7 +29,7 @@ function draw_timeline(timelineDivId, user_table, data){
                 })*/
 
          const timelineDiv = d3.select(timelineDivId);
-         block_div = timelineDiv.selectAll("div").data(data.reverse());
+         block_div = timelineDiv.selectAll("div").data(data);
      
          const block_div_enter = block_div.enter()
              .append('div')
@@ -41,7 +41,7 @@ function draw_timeline(timelineDivId, user_table, data){
          block_div_enter.append('p').text(d => {
              let names = "";
              d.Students.forEach(id=>{
-                 console.log(id)
+                 //console.log(id)
                  if (id != '')
                      names += user_table[id].name + ', ';
              })
