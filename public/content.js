@@ -26,6 +26,15 @@ window.onunload = window.onbeforeunload = () => {
     close_peer_connection();
 }
 
+function append_student_lsit() {
+    for(i=0;i<5;i++) {
+        var block = $(`<div class="col p-1"></div>`);
+        block.append($(`<div class="mx-auto"></div>`)
+                .append($(`<video playsinline autoplay muted id="student-cam-` + i + `" class="video-student" poster="img/student_offline.png"></video>`)));
+        $("#tassel-student").append(block);
+    }
+}
+
 $(document).ready(() => {
     socket.on("update_user_table", (data) => {
         for (const [key, info] of Object.entries(data)) {
@@ -44,6 +53,8 @@ $(document).ready(() => {
         /*tassel_list = data;*/
         draw_timeline('#TimelineContainer', user_table, data);
     })
+
+    append_student_lsit();
 
     /*socket.on('update-tassel', (count)=>{
         console.log('get tassel')
