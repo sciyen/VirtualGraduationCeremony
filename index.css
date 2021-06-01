@@ -534,3 +534,23 @@ iframe{
   width: 100%;
   height: 100%;
 }
+
+.photo-container{
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0px auto;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.middle_helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.photo-container img{
+  object-fit: contain;
+  margin: auto;
+  vertical-align : middle;
+}
