@@ -24,6 +24,24 @@ video {
     object-fit: cover;
 }
 
+.video-student {
+    width: 256px;
+    height: 192px;
+    display: block;
+    object-fit: cover;
+}
+
+/*.container {
+    max-width: 2000px;
+}*/
+
+@media (min-width: 1500px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 1440px;
+    }
+}
+
+
 .hide{
     display:none;
 }

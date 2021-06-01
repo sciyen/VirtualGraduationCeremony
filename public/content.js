@@ -99,6 +99,8 @@ $(document).ready(() => {
         }
     })
 
+    append_student_lsit();
+
     /*socket.on('update-tassel', (count)=>{
         console.log('get tassel')
         draw_timeline('#TimelineContainer', user_table, tassel_list.slice(count));
