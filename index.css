@@ -494,6 +494,51 @@ h1 {
   text-transform: uppercase;
 }
 
+/* https://codepen.io/dudleystorey/pen/kFoGw */
+
+@keyframes slidy {
+  0% { left: 0%; }
+  25% { left: 0%; }
+  30% { left: -100%; }
+  45% { left: -100%; }
+  50% { left: -200%; }
+  65% { left: -200%; }
+  70% { left: -300%; }
+  85% { left: -300%; }
+  90% { left: -400%; }
+  100% { left: -400%; }
+  }
+  /** {
+    box-sizing: border-box;
+  }*/
+  figure { 
+    margin: 0;
+    font-family: Istok Web, sans-serif;
+    font-weight: 100;
+  }
+  div#captioned-gallery { 
+    width: 100%; overflow: hidden; 
+  }
+  figure.slider { 
+    height: 100%;
+    position: relative; width: 500%;
+    font-size: 0; animation: 25s slidy infinite; 
+  }
+  figure.slider figure { 
+    width: 20%; height: auto;
+    text-align: center;
+    display: inline-block;  position: inherit; 
+  }
+  figure.slider img { width: auto; height: 100%; }
+  figure.slider figure figcaption { 
+    position: absolute; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    color: #fff; width: 100%;
+    font-size: 2rem; padding: .6rem; 
+  }
+  
+/**/
+
 .info{
   position: relative;
   right:0%;
