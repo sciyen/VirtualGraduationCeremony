@@ -8,6 +8,7 @@
     "express-session": "^1.17.2",
     "google-spreadsheet": "^3.1.15",
     "googleapis": "39",
+    "md5": "^2.3.0",
     "socket.io": "^4.1.2"
   }
 }

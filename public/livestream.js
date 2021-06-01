@@ -28,7 +28,7 @@ function start_broadcasting(){
     socket.emit("broadcaster");
 }
 
-function init(socket) {
+function init(socket, self_id, offer_callback) {
     for (var i = 0; i < max_video; i++) {
         video_container.push(document.querySelector("video#v"+i));
     }
@@ -55,12 +55,12 @@ function init(socket) {
             .createOffer()
             .then(sdp => peerConnection.setLocalDescription(sdp))
             .then(() => {
-                socket.emit("offer", id, peerConnection.localDescription);
+                socket.emit("offer", id, peerConnection.localDescription, self_id);
             });
     });
 
     // watcher receive from broadcaster
-    socket.on("offer", (id, description) => {
+    socket.on("offer", (id, description, sid) => {
         // We can then create our RTCPeerConnection and get the video stream from the broadcaster.
         watchConns[id] = new RTCPeerConnection(config);
         watchConns[id]
@@ -75,8 +75,9 @@ function init(socket) {
         // After the connection is established we can continue by getting the video stream using the ontrack event listener of the peerConnection object.
         watchConns[id].ontrack = event => {
             if (user_count < max_video) {
-                video_container[user_count].srcObject = event.streams[0];
-                console.log("Attached to " + user_count)
+                offer_callback(sid, event.streams[0])
+                /*video_container[user_count].srcObject = event.streams[0];
+                console.log("Attached to " + user_count)*/
                 user_count++;
             }
             else

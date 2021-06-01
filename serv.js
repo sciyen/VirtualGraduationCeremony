@@ -13,6 +13,7 @@ gsheet.getTasselData(tassel => {
     console.log(tassel_list);
 })
 
+md5 = require('md5');
 const https = require("https");
 var fs = require('fs');
 var options = {
@@ -27,8 +28,6 @@ app.use(session({
     secret: "This is key",
     cookie: { "sid": 0 }
 }));
-
-app.use(express.static(__dirname + "/public"));
 
 
 /* configs and data read */
@@ -71,8 +70,8 @@ io.sockets.on("connection", socket => {
     socket.on("terminate_broadcasting", ()=>{
         socket.broadcast.emit("disconnectPeer", socket.id);
     })
-    socket.on("offer", (id, message) => {
-        socket.to(id).emit("offer", socket.id, message);
+    socket.on("offer", (id, message, sid) => {
+        socket.to(id).emit("offer", socket.id, message, sid);
     });
 
     // Message transfer
@@ -91,8 +90,8 @@ io.sockets.on("connection", socket => {
         socket.emit("update_tassel_list", tassel_list);
     });
     
-    socket.emit("update_user_table", user_table)
-    socket.emit("update_tassel_list", tassel_list);
+    socket.broadcast.emit("update_user_table", user_table)
+    //socket.emit("update_tassel_list", tassel_list);
     socket.on('set-tassel', (data)=>{
         socket.broadcast.emit('update_tassel_list', data)
     })
@@ -109,6 +108,27 @@ app.get("/user_table", (req, res) => {
     res.send(user_table);
 })*/
 
+app.get("/initialization", (req, res)=>{
+    res.send({
+        'id': req.session.name,
+        'user_table': user_table,
+        'tassel_list': tassel_list,
+        'tassel_essay': ""
+    })
+})
+
+app.get("/", (req, res)=>{
+    redirect('content.html');
+})
+app.get("/content.html", (req, res, next)=>{
+    if (req.session.name === undefined)
+        res.redirect('/home.html')
+    else
+        next();
+})
+app.use(express.static(__dirname + "/public"));
+
+
 app.get("/logout", (req, res) => {
     if (req.session.name !== undefined) {
         user_table[req.session.name]["state"] = "offline";
@@ -121,10 +141,24 @@ app.get("/logout", (req, res) => {
 
 app.get("/login", (req, res) => {
     var name = ""
-    if (req.query.role === "teachers" && req.query.teacher != "")
-        name = req.query.teacher;
-    else if (req.query.role === "students" && req.query.student != "")
-        name = req.query.student;
+    if (req.query.role === "teachers" && req.query.teacher != ""){
+        if (req.query['teacher-passwd'] == req.query.teacher)
+            name = req.query.teacher;
+        else{
+            res.send("Wrong password");
+            return;
+        }
+    }
+    else if (req.query.role === "students" && req.query.student != ""){
+        console.log(req.query.student)
+        console.log(req.query.student)
+        if (req.query['passwd'] == req.query.student)
+            name = req.query.student;
+        else{
+            res.send("Wrong password");
+            return;
+        }
+    }
     else {
         res.send("failed to login");
         return;
@@ -133,7 +167,8 @@ app.get("/login", (req, res) => {
     console.log(name);
     if (user_table[name] !== undefined) {
         user_table[name]["state"] = "online";
-        res.redirect('/content.html');
+        //res.redirect('/content.html');
+        res.send('ok')
     }
     else
         res.send("failed to lookup");

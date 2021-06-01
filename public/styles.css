@@ -63,3 +63,14 @@ img{
     height: 100%;
     border-right: 1px solid white;
 }
+
+#div-cam-self{
+    position: fixed;
+    top: 0;
+    right:0;
+}
+
+#div-cam-self video{
+    width: 200px;
+    height: 200px;
+}
