@@ -18,6 +18,9 @@ $(document).ready(()=>{
         update_tassel(tassel_list, tassel_count);
     })
 
+    $("button#ceremony-state").click(()=>{
+        socket.emit("set_ceremony_stage", $("select#ceremony-state").val());
+    })
     $("#btn-tassel-next").click(()=>{
         if (tassel_count < tassel_list.length){
             tassel_count++;

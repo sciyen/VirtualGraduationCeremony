@@ -5,11 +5,14 @@ const port = 10418;
 
 const gsheet = require('./gsheet_connection.js');
 
+let ceremony_state = "idle";
 var tassel_list = [];
+var current_tassel_list = [];
 let tassel_count = 0;
 
 gsheet.getTasselData(tassel => {
     tassel_list = tassel;
+    current_tassel_list = [...tassel];
     console.log(tassel_list);
 })
 
@@ -46,35 +49,50 @@ function loadUsername(){
 }
 
 io.sockets.on("connection", socket => {
-    socket.on("broadcaster", () => {
+    //watcher[socket.id] = socket.id;
+    if (Object.keys(broadcaster).length > 0){
+        for(const id in broadcaster){
+            socket.to(id).emit("watcher", socket.id);
+        }
+    }
+
+    socket.on("set_ceremony_stage", (s)=>{
+        ceremony_state = s;
+        console.log(`Set ceremony state ${s}`);
+        socket.broadcast.emit("set_ceremony_stage", s);
+    })
+    
+    socket.on("broadcaster", (sid) => {
         if (!(socket.id in broadcaster)) {
-            broadcaster[socket.id] = socket.id;
-            socket.broadcast.emit("broadcaster");
-            console.log(`Get broadcaster request: ${socket.id}`);
+            broadcaster[socket.id] = sid;
+            socket.broadcast.emit("broadcaster", socket.id);
+            console.log(`Get broadcaster request: ${socket.id} from ${user_table[sid]}`);
         }
         else
             console.log("Duplicated broadcaster");
     });
-    socket.on("watcher", () => {
-        watcher[socket.id] = socket.id;
-        for (const [key, value] of Object.entries(broadcaster)) {
-            socket.to(value).emit("watcher", socket.id);
-        }
+
+    // from watcher to broadcaster
+    socket.on("watcher", (broad_id) => {
+        // watcher[socket.id] = socket.id;
+        socket.to(broad_id).emit("watcher", socket.id);
         console.log(`Get watcher request: ${socket.id}`);
     });
     socket.on("disconnect", () => {
         if (Object.keys(broadcaster).length <= 0){
             console.log("Disconnect to all");
             for (const [key, value] of Object.entries(broadcaster)) {
-                socket.to(value).emit("disconnectPeer", socket.id);
+                socket.to(key).emit("disconnectPeer", socket.id, "broadcaster");
             }
         }
     });
     socket.on("terminate_broadcasting", ()=>{
-        socket.broadcast.emit("disconnectPeer", socket.id);
+        delete broadcaster[socket.id];
+        socket.broadcast.emit("disconnectPeer", socket.id, "watcher");
     })
-    socket.on("offer", (id, message, sid) => {
-        socket.to(id).emit("offer", socket.id, message, sid);
+    // broadcaster to watcher
+    socket.on("offer", (watcher_id, message, sid) => {
+        socket.to(watcher_id).emit("offer", socket.id, message, sid);
     });
 
     // Message transfer
@@ -85,17 +103,14 @@ io.sockets.on("connection", socket => {
         socket.to(id).emit("candidate", socket.id, message, target);
     });
 
-    /*setInterval(()=>{
-        var data = tassel_list.slice(Math.floor(Math.random()*tassel_list.length))
-        socket.emit("update_tassel_list", data);
-    }, 1000)*/
-    socket.on("request_tassel_list", ()=>{
+    /*socket.on("request_tassel_list", ()=>{
         socket.emit("update_tassel_list", tassel_list);
-    });
+    });*/
     
     socket.broadcast.emit("update_user_table", user_table)
     //socket.emit("update_tassel_list", tassel_list);
     socket.on('set-tassel', (data)=>{
+        current_tassel_list = data;
         socket.broadcast.emit('update_tassel_list', data)
     })
 
@@ -113,9 +128,10 @@ app.get("/user_table", (req, res) => {
 
 app.get("/initialization", (req, res)=>{
     res.send({
+        'ceremony_state': ceremony_state,
         'id': req.session.name,
         'user_table': user_table,
-        'tassel_list': tassel_list,
+        'tassel_list': current_tassel_list,
         'tassel_essay': ""
     })
 })

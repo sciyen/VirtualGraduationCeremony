@@ -30,10 +30,21 @@
                     </div>
                 </div>
                 <div class="col">
-                    <h5>Tassel Control</h5>
-                    <label for="input-tassel-num">Tassel number</label>
-                    <button id="btn-tassel-prev">Previous</button>
-                    <button id="btn-tassel-next">Next</button>
+                    <div>
+                        <h5>Ceremony Control</h5>
+                        <label for=ceremony-state>Ceremony State</label>
+                        <select id="ceremony-state">
+                            <option value="idle">閒置</option>
+                            <option value="tassel">撥穗儀式</option>
+                        </select>
+                        <button class="btn btn-outline-success" id="ceremony-state">Submit</button>
+                    </div>
+                    <div>
+                        <h5>Tassel Control</h5>
+                        <label for="input-tassel-num">Tassel number</label>
+                        <button class="btn btn-outline-success" id="btn-tassel-prev">Previous</button>
+                        <button class="btn btn-outline-success" id="btn-tassel-next">Next</button>
+                    </div>
                 </div>
             </div>
         </div>

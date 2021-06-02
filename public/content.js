@@ -5,6 +5,9 @@ let self_id = ""
 let user_table = {}
 let tassel_list = []
 
+// tassel, 
+let ceremony_stage = "idle";
+
 // Media contrains
 const constraints = {
     video: { facingMode: "user" },
@@ -16,14 +19,13 @@ navigator.mediaDevices
     .getUserMedia(constraints)
     .then(stream => {
         video.srcObject = stream;
-        //socket.emit("broadcaster");
     })
     .catch(error => console.error(error));
 
 
 window.onunload = window.onbeforeunload = () => {
     socket.close();
-    close_peer_connection();
+    close_all_peer_connection();
 }
 
 function bind_video_stream(sid, tassel, stream){
@@ -59,12 +61,14 @@ $(document).ready(() => {
     append_student_list();
 
     $.getJSON("/initialization", data=>{
+        ceremony_stage = data['ceremony_state'];
         self_id = data['id'];
         user_table = data['user_table'];
         tassel_list = data['tassel_list'];
 
         console.log(data)
         $("#username").text(user_table[self_id].name);
+        $("#ceremony-state").text(ceremony_stage);
         for (const [key, info] of Object.entries(user_table)) {
             var block = $(`<span class="div-present"></span>`).attr('id', 'present-' + key);
             if (info["state"] !== undefined && info["state"] == "online")
@@ -80,6 +84,13 @@ $(document).ready(() => {
         init(socket, self_id, (sid, stream)=>{
             bind_video_stream(sid, tassel_list[0], stream);
         })
+
+        // hooks up current tassel status
+        update_tassel_live_stream(tassel_list);
+    })
+
+    socket.on("set_ceremony_stage", (s)=>{
+        ceremony_stage = s;
     })
 
     socket.on("update_user_table", (data) => {
@@ -94,6 +105,16 @@ $(document).ready(() => {
         console.log (data[0])
         console.log(`user: ${self_id}`)
         
+        update_tassel_live_stream(data);
+    })    
+
+    $("#btn-logout").click(()=>{
+        $.get("/logout", ()=>window.location.replace('/home.html'));
+    })
+})
+
+function update_tassel_live_stream(data){
+    if (ceremony_stage == "tassel"){
         if (self_id == data[0].Teacher){
             //Teacher broadcast
             $("#teacher-cam")[0].srcObject = video.captureStream();
@@ -106,19 +127,10 @@ $(document).ready(() => {
             start_broadcasting();
         }
         else{
+            // close any broadcasting
             terminate_broadcasting();
             // Arrange watchers
         }
-    })
-
-    /*socket.on('update-tassel', (count)=>{
-        console.log('get tassel')
-        draw_timeline('#TimelineContainer', user_table, tassel_list.slice(count));
-    })*/
-    $("#btn-logout").click(()=>{
-        $.get("/logout", ()=>window.location.replace('/home.html'));
-    })
-})
-
-
+    }
+}
  

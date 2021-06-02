@@ -1,5 +1,6 @@
 const broadcastConns = {};  // broadcaster to watchers
 const watchConns = {};  // watcher to broadcasters
+let broadcasting = false;
 const config = {
     iceServers: [
         {
@@ -8,33 +9,30 @@ const config = {
     ]
 };
 
-const video_container = [];
-const max_video = 3;
-let user_count = 0;
-
-function close_peer_connection(){
-    for (const [key, value] of Object.entries(watchConns)){
+function close_all_peer_connection(){
+    terminate_broadcasting();
+    for (const id in watchConns){
         watchConns[value].close();
     }
+    watchConns = {}
 }
 
 function terminate_broadcasting(){
-    for (const [key, value] of Object.entries(broadcastConns)){
-        broadcastConns[id].close();
-        delete broadcastConns[id];
+    if (broadcasting){
+        for (const id in broadcastConns){
+            broadcastConns[id].close();
+            delete broadcastConns[id];
+        }
+        socket.emit("terminate_broadcasting");
     }
-    socket.emit("terminate_broadcasting");
 }
 
 function start_broadcasting(){
-    socket.emit("broadcaster");
+    broadcasting = true;
+    socket.emit("broadcaster", self_id);
 }
 
 function init(socket, self_id, offer_callback) {
-    for (var i = 0; i < max_video; i++) {
-        video_container.push(document.querySelector("video#v"+i));
-    }
-
     // broadcaster receive from watcher
     socket.on("watcher", id => {
         // We create a new RTCPeerConnection every time a new client joins and save it in our broadcastConns object.
@@ -76,14 +74,7 @@ function init(socket, self_id, offer_callback) {
             });
         // After the connection is established we can continue by getting the video stream using the ontrack event listener of the peerConnection object.
         watchConns[id].ontrack = event => {
-            if (user_count < max_video) {
-                offer_callback(sid, event.streams[0])
-                /*video_container[user_count].srcObject = event.streams[0];
-                console.log("Attached to " + user_count)*/
-                user_count++;
-            }
-            else
-                console.log("Container full");
+            offer_callback(sid, event.streams[0])
         };
         watchConns[id].onicecandidate = event => {
             if (event.candidate) {
@@ -92,27 +83,34 @@ function init(socket, self_id, offer_callback) {
         };
     });
 
+    // watcher received from broadcaster
     socket.on("answer", (id, description) => {
         broadcastConns[id].setRemoteDescription(description);
     });
 
     socket.on("candidate", (id, candidate, target) => {
+        // broadcaster received from watcher
         if (target == 'broadcaster')
             broadcastConns[id].addIceCandidate(new RTCIceCandidate(candidate));
+        // watcher received from broadcaster
         else if (target == 'watcher')
             watchConns[id].addIceCandidate(new RTCIceCandidate(candidate));
     });
 
-    socket.on("connect", () => {
-        socket.emit("watcher");
+    // watcher recieve from broadcaster broadcasted from server
+    socket.on("broadcaster", (broad_id) => {
+        socket.emit("watcher", broad_id);
     });
 
-    socket.on("broadcaster", () => {
-        socket.emit("watcher");
-    });
-
-    socket.on("disconnectPeer", id => {
-        broadcastConns[id].close();
-        delete broadcastConns[id];
+    // terminate request from broadcaster
+    socket.on("disconnectPeer", (id, who) => {
+        if (who == "watcher"){
+            watchConns[id].close();
+            delete watchConns[id];
+        }
+        else if (who == "broadcaster"){
+            broadcastConns[id].close();
+            delete broadcastConns[id];
+        }
     });
 }
