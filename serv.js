@@ -7,12 +7,10 @@ const gsheet = require('./gsheet_connection.js');
 
 let ceremony_state = "idle";
 var tassel_list = [];
-var current_tassel_list = [];
 let tassel_count = 0;
 
 gsheet.getTasselData(tassel => {
     tassel_list = tassel;
-    current_tassel_list = [...tassel];
     console.log(tassel_list);
 })
 
@@ -109,9 +107,9 @@ io.sockets.on("connection", socket => {
     
     socket.broadcast.emit("update_user_table", user_table)
     //socket.emit("update_tassel_list", tassel_list);
-    socket.on('set-tassel', (data)=>{
-        current_tassel_list = data;
-        socket.broadcast.emit('update_tassel_list', data)
+    socket.on('set-tassel', (count)=>{
+        tassel_count = count;
+        socket.broadcast.emit('update_tassel_list', tassel_count);
     })
 
     socket.on('close', ()=>{
@@ -131,7 +129,8 @@ app.get("/initialization", (req, res)=>{
         'ceremony_state': ceremony_state,
         'id': req.session.name,
         'user_table': user_table,
-        'tassel_list': current_tassel_list,
+        'tassel_count': tassel_count,
+        'tassel_list': tassel_list,
         'tassel_essay': ""
     })
 })

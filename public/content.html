@@ -16,6 +16,7 @@
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -56,7 +57,9 @@
         <div class="tab-pane fade show" id="info" role="tabpanel" aria-labelledby="info-tab">
             <h1> 流程 </h1>
             <div class="container row mx-auto">
-                <div class="col-4" id="TimelineContainer"></div>
+                <div class="col-4">
+                    <div id="TimelineContainer"></div> 
+                </div>
                 <div class="col-8"></div>
             </div>
         </div>
@@ -113,7 +116,6 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
     <script src="/livestream.js"></script>
     <script src="/timeline.js"></script>
     <script src="/content.js"></script>

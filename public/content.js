@@ -4,6 +4,7 @@ const video = document.querySelector("video#cam-self");
 let self_id = ""
 let user_table = {}
 let tassel_list = []
+let tassel_count = 0;
 
 // tassel, 
 let ceremony_stage = "idle";
@@ -64,6 +65,7 @@ $(document).ready(() => {
         ceremony_stage = data['ceremony_state'];
         self_id = data['id'];
         user_table = data['user_table'];
+        tassel_count = data['tassel_count'];
         tassel_list = data['tassel_list'];
 
         console.log(data)
@@ -78,7 +80,7 @@ $(document).ready(() => {
             block.append($(`<p>${info.name}</p>`))
             $("#present-container").append(block)
         }
-        draw_timeline('#TimelineContainer', user_table, tassel_list);
+        draw_timeline('#TimelineContainer', user_table, tassel_list, tassel_count);
 
 
         init(socket, self_id, (sid, stream)=>{
@@ -98,14 +100,14 @@ $(document).ready(() => {
         // TODO: update present table
     })
 
-    socket.on("update_tassel_list", (data) => {
-        /*tassel_list = data;*/
-        draw_timeline('#TimelineContainer', user_table, data);
+    socket.on("update_tassel_list", (count) => {
+        tassel_count = count;
+        draw_timeline('#TimelineContainer', user_table, tassel_list, tassel_count);
         console.log (`Current tassel:`)
-        console.log (data[0])
+        console.log (tassel_list[tassel_count])
         console.log(`user: ${self_id}`)
         
-        update_tassel_live_stream(data);
+        update_tassel_live_stream(tassel_list[tassel_count]);
     })    
 
     $("#btn-logout").click(()=>{
