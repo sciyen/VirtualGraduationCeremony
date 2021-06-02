@@ -52,9 +52,33 @@ function bind_video_stream(sid, tassel, stream){
 function append_student_list() {
     for(i=0;i<5;i++) {
         var block = $(`<div class="col p-1"></div>`);
-        block.append($(`<div class="mx-auto"></div>`)
-                .append($(`<video playsinline autoplay muted id="student-cam-` + i + `" class="video-student" poster="img/student_offline.png"></video>`)));
+        block.append($(`<div class="mx-auto student-container"></div>`)
+            .append($("<video playsinline autoplay muted poster='img/student_offline.png'></video>")
+                .attr("id", "student-cam-"+i)
+                .attr("class", "video-student"))
+            .append($("<img class='cap' src='/img/cap.png'>"))
+            .append($('<div class="control"></div>')
+                .append($("<img class='tassel' src='/img/tassel.png'>")
+                    .attr('id', 'tassel-'+i))
+                .append($("<input type='range'></input>")
+                    .attr("class", "")
+                    .attr('min', 0).attr('max', 100).val(0)
+                    .attr('id', 'range-input-'+i)
+            )
+                /*.on('input', ()=>{
+                    console.log($(this).val())
+                    $(this).siblings('.tassel')
+                        .attr('left', $(this).value + "%")
+                })*/ )
+        );
+        
         $("#tassel-student").append(block);
+    }
+    for (let i=0; i<5; i++){
+        $('#range-input-'+i).on('input', ()=>{
+            let val = $('#range-input-'+i).val(); 
+            $('#tassel-'+i).css('left', val + '%')
+        })
     }
 }
 
