@@ -78,6 +78,9 @@ function append_student_list() {
         $('#range-input-'+i).on('input', ()=>{
             let val = $('#range-input-'+i).val(); 
             $('#tassel-'+i).css('left', val + '%')
+            socket.emit('control-tassel', {
+                'id': i, 'val': val
+            })
         })
     }
 }
@@ -133,6 +136,10 @@ $(document).ready(() => {
         
         update_tassel_live_stream(tassel_list[tassel_count]);
     })    
+
+    socket.on('control-tassel', (data)=>{
+        $('#range-input-'+data['id']).val(data['val'])
+    })
 
     $("#btn-logout").click(()=>{
         $.get("/logout", ()=>window.location.replace('/home.html'));

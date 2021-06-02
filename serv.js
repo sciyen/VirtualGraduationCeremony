@@ -118,6 +118,10 @@ io.sockets.on("connection", socket => {
         })
         socket.broadcast.emit("update_user_table", user_table)
     })
+
+    socket.on('control-tassel', (data)=>{
+        socket.broadcast.emit('control-tassel', data);
+    })
 });
 /*
 app.get("/user_table", (req, res) => {
