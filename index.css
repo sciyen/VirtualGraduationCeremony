@@ -1,6 +1,8 @@
-@import url(https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css);
+/*@import url(https://fonts.googleapis.com/earlyaccess/cwtexfangsong.css);*/
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
 *{
-  font-family: 'cwTeXFangSong', sans-serif;
+  /*font-family: 'cwTeXFangSong', sans-serif;*/
+  font-family: ‘Noto Sans TC’, sans-serif;
 }
 
 html {
@@ -51,6 +53,7 @@ canvas {
   left: 1em;
   top: 1em;
   width: 130px;
+  height: 400px;
   z-index: 30000;
   background: #000;
   border: #000 solid 1em;
@@ -166,18 +169,35 @@ html, body {
 }
 
 .wrapper .page.page2 {
+  background-color: #24353a;
+  background-image: linear-gradient(10deg, #251153 20%, #5471B9 80%);
+  /*background-image: linear-gradient(10deg, #303A52 20%, #574B90 80%);*/
+}
+
+.wrapper .page.page3 {
+  background-color: #24353a;
+  background-image: linear-gradient(10deg, #251153 20%, #5471B9 80%);
+  /*background-image: linear-gradient(10deg, #303A52 20%, #574B90 80%);*/
+}
+
+.wrapper .page.page4 {
   background-color: #f29c54;
   background-image: linear-gradient(45deg, #f29c54 0%, #DB4367 100%);
 }
 
-.wrapper .page.page3 {
+.wrapper .page.page5 {
   background-color: #23af56;
   background-image: linear-gradient(135deg, #23af56 0%, #67A79A 100%);
 }
 
-.wrapper .page.page4 {
+.wrapper .page.page6 {
   background-color: #412F2F;
   background-image: linear-gradient(160deg, #412F2F 15%, #6B2686 85%);
+}
+
+.wrapper .page.page7 {
+  background-color: #24353a;
+  background-image: linear-gradient(10deg, #251153 20%, #5471B9 80%);
 }
 
 .wrapper.active-page1 {
@@ -517,6 +537,8 @@ h1 {
     font-weight: 100;
   }
   div#captioned-gallery { 
+    position: absolute;
+    bottom: 10%;
     width: 100%; overflow: hidden; 
   }
   figure.slider { 
@@ -536,7 +558,429 @@ h1 {
     color: #fff; width: 100%;
     font-size: 2rem; padding: .6rem; 
   }
-  
+
+/* https://codepen.io/rpcectdj-the-selector/pen/dyvmydo */
+@use postcss-preset-env {
+  stage: 0;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+/*
+html {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #32525a;
+  color: #7e7e7e;
+  font-family: Source Sans Pro, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  min-height: 100vh;
+  padding: 10vmin;
+}
+
+a {
+  color: #ce616f;
+}
+
+h1,
+h2,
+h3 {
+  color: #fff;
+  font-weight: 600;
+}*/
+
+.map__marker-info-header h2 {
+  box-sizing: border-box;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5em;
+  margin-bottom: 0.33em;
+  margin-top: 0;
+}
+
+h3,
+.h3 {
+  font-size: 1.25em;
+  margin: 0 0 0.5em;
+}
+
+p {
+  margin: 0.5em 0;
+}
+
+svg {
+  height: auto;
+  max-width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.subline {
+  color: #cee0fc;
+  font-weight: normal;
+}
+
+.align {
+  display: grid;
+  place-items: center;
+}
+
+.grid {
+  /*position: absolute;
+  margin-left: auto;
+  margin-right: auto;*/
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1600px;
+  width: 80%;
+}
+
+.map {
+  margin-top:3em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.map2 {
+  margin-top:3em;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.cover {
+    width: relative;
+    height: relative;
+    position: relative;
+}
+.cover:after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    box-shadow:0 0 50px 30px #000000 inset;
+}
+
+.map__markers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.map__marker {
+  position: absolute;
+}
+
+.map__marker:after {
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-name: pop;
+  border-radius: 50%;
+  border: 1px solid #ce606f;
+  content: "";
+  height: 1em;
+  left: 0;
+  margin: -0.5em 0 0 -0.5em;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 1em;
+}
+
+.map__marker:hover .map__marker-info {
+  display: block;
+}
+
+.map__marker__hover {
+  display: block !important;
+}
+
+.map__marker > a {
+  background-color:	#000000;
+  border-radius: 50%;
+  opacity:70%;
+  border-style:outset;
+  height: 1em;
+  display: block;
+  text-indent: -9999px;
+  width: 1em;
+}
+
+.map__marker--night-street {
+  left: 27%;
+  top: 36%;
+}
+
+.map__marker--ckgate {
+  left: 17%;
+  top: 36%;
+}
+
+.map__marker--ckgate:after {
+  animation-delay: 3s;
+}
+
+.map__marker--tnstation {
+  left: 84%;
+  top: 50%;
+}
+
+.map__marker--tnstation:after {
+  animation-delay: 5s;
+}
+
+.map__marker--sport {
+  left: 66%;
+  top: 60%;
+}
+
+.map__marker--wastestreet {
+  left: 35%;
+  top: 35%;
+}
+
+.map__marker--wastestreet:after {
+  animation-delay: 5s;
+}
+
+.map__marker--wastestreet2 {
+  left: 45%;
+  top: 35%;
+}
+
+.map__marker--wastestreet2:after {
+  animation-delay: 5s;
+}
+
+.map__marker--sdroad {
+  left: 10%;
+  top: 60%;
+}
+
+.map__marker--sdroad:after {
+  animation-delay: 5s;
+}
+
+
+.map__marker--volle {
+  left: 52%;
+  top: 46%;
+}
+
+.map__marker--volle:after {
+  animation-delay: 5s;
+}
+
+.map__marker--playground{
+  left: 80%;
+  top: 60%;
+}
+
+.map__marker--playground:after {
+  animation-delay: 5s;
+}
+
+
+.map__marker--dsroad {
+  left: 43%;
+  top: 40%;
+}
+
+.map__marker--dsroad:after {
+  animation-delay: 5s;
+}
+
+.map__marker--cross {
+  left: 8%;
+  top: 33%;
+}
+
+.map__marker--cross:after {
+  animation-delay: 5s;
+}
+
+.map__marker--sun {
+  left: 48%;
+  top: 49%;
+}
+
+.map__marker-sun:after {
+  animation-delay: 5s;
+}
+
+.map__marker--waterpool {
+  left: 25%;
+  top: 90%;
+}
+
+.map__marker--waterpool:after {
+  animation-delay: 5s;
+}
+
+.map__marker--cat1 {
+  left: 60%;
+  top: 50%;
+}
+
+.map__marker--cat1:after {
+  animation-delay: 5s;
+}
+
+.map__marker--cat2 {
+  left: 25%;
+  top: 50%;
+}
+
+.map__marker--cat2:after {
+  animation-delay: 5s;
+}
+
+.map__marker--gate {
+  left: 65%;
+  top: 75%;
+}
+
+.map__marker--gate:after {
+  animation-delay: 5s;
+}
+
+.map__marker--left{
+  left: 50%;
+  top: 95%;
+}
+
+.map__marker--left:after {
+  animation-delay: 5s;
+}
+
+.map__marker--right {
+  left: 80%;
+  top: 90%;
+}
+
+.map__marker--right:after {
+  animation-delay: 5s;
+}
+
+.map__marker--night {
+  left: 53%;
+  top: 85%;
+}
+
+.map__marker--night:after {
+  animation-delay: 5s;
+}
+
+.map__marker--library {
+  left: 80%;
+  top: 50%;
+}
+
+.map__marker-library:after {
+  animation-delay: 5s;
+}
+
+.map__marker-info {
+  display: none;
+  left: 50%;
+  position: absolute;
+  bottom: 0;
+  transform: translate(-50%, -2em);
+  width: relative;
+  z-index: 999;
+}
+
+.map__marker-info-header {
+  text-align: center;
+  background-color: rgba(105,105,105,0.7);
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  color: #fff;
+  padding: 0.5em 1em;
+}
+
+.map__marker-info-main {
+  background-color:  rgba(0, 0, 0, 0.7);
+  margin-left: auto;
+  margin-right: auto;
+  height: 365px;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  color: #7e7e7e;
+  padding: 0.5em 1em;
+}
+
+.map__marker-info h2 {
+  margin-bottom: 0;
+}
+
+.map__marker-info-inner {
+  border-radius: 0.5em;
+  box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.7);
+  font-size: 0.875em;
+}
+
+.map__marker-info-inner:after {
+  border-left: 0.75em solid transparent;
+  border-right: 0.75em solid transparent;
+  border-top: 1em solid #fff;
+  content: "";
+  height: 0;
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 0;
+}
+
+.animate {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@keyframes bounce-in {
+  0%, 20%, 40%, 60%, 80%, 100% {
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  40% {
+    transform: scale3d(1, 1, 1);
+  }
+  60% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+  80% {
+    transform: scale3d(1, 1, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.animate--bounce-in {
+  animation-duration: 0.75s;
+  animation-name: bounce-in;
+}
+
+
 /**/
 
 .info{
@@ -566,7 +1010,8 @@ li p, ul p{
 }
 
 .page h4{
-  padding: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   text-align: center;
 }
 

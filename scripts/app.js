@@ -7,29 +7,33 @@ setTimeout(function () {
             { src: 'https://i.imgur.com/Kl5VhS1h.jpg' },
             { src: 'https://i.imgur.com/4ATHCKjh.jpg' },
             { src: 'https://i.imgur.com/R5PtdRVh.jpg' },
-            { src: 'https://i.imgur.com/3xaAzoHh.jpg' },
+            { src: 'https://i.imgur.com/xRoSMPJh.jpg' },
             { src: 'https://i.imgur.com/MGKFhIRh.jpg' },
             { src: 'https://i.imgur.com/viEeXxgh.jpg' },
             { src: 'https://i.imgur.com/FBfKYn0h.jpg' },
             { src: 'https://i.imgur.com/9DZteHeh.jpg' },
-            { src: 'https://i.imgur.com/o2sPncBh.jpg' },
+            { src: 'https://i.imgur.com/JyhY1Xwh.jpg' },
             { src: 'https://i.imgur.com/TRe8hP9h.jpg' },
             { src: 'https://i.imgur.com/IDHuigZh.jpg' },
-            { src: 'https://i.imgur.com/eEEy6tLh.jpg' },
+            { src: 'https://i.imgur.com/dy37x1oh.jpg' },
             { src: 'https://i.imgur.com/O9bnSxyh.jpg' },
             { src: 'https://i.imgur.com/RNjC9Ifh.jpg' },
             { src: 'https://i.imgur.com/KU9gYr9h.jpg' },
             { src: 'https://i.imgur.com/21PZ6Ebh.jpg' },
             { src: 'https://i.imgur.com/scCI95Lh.jpg' },
-            { src: 'https://i.imgur.com/WqestR0h.jpg' },
+            { src: 'https://i.imgur.com/lCdN1Lqh.jpg' },
             { src: 'https://i.imgur.com/4miGB91h.jpg' },
-            { src: 'https://i.imgur.com/XVzfrUHh.jpg' },
+            { src: 'https://i.imgur.com/telRBrFh.jpg' },
             { src: 'https://i.imgur.com/jnEv6U5h.jpg' },
             { src: 'https://i.imgur.com/tT1Oyfeh.jpg' },
             { src: 'https://i.imgur.com/vWhwCePh.jpg' },
             { src: 'https://i.imgur.com/d1IrTQIh.jpg' },
-            { src: 'https://i.imgur.com/OV3Nq9nh.jpg' },
+            { src: 'https://i.imgur.com/W0gsuLRh.jpg' },
             { src: 'https://i.imgur.com/oxfu1u9h.jpg' },
+            { src: 'https://i.imgur.com/e0nCfvGh.jpg' },
+            { src: 'https://i.imgur.com/gqwfVOnh.jpg' },
+            { src: 'https://i.imgur.com/ZhjoZ4Hh.jpg' },
+            { src: 'https://i.imgur.com/40C2Zk1h.jpg' },
             /*{ src: 'https://i.imgur.com/n2tR87M.jpg' },
             { src: 'https://i.imgur.com/pJpV8st.jpg' },
             { src: 'https://i.imgur.com/cLfyfpS.jpg' },
@@ -88,3 +92,12 @@ setTimeout(function () {
         ]
     );
 }, 2000);
+
+$(document).ready(() => {
+    $('.map__marker').on('touchstart touchend', function (e) {
+        e.preventDefault();
+        console.log('hover!')
+        //$(this).toggleClass('map__marker__hover');
+        $(this).children('.map__marker-info').toggleClass('map__marker__hover');
+    });
+})
