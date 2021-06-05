@@ -604,6 +604,10 @@ h3 {
   margin-top: 0;
 }
 
+header h2{
+  display: none;
+}
+
 h3,
 .h3 {
   font-size: 1.25em;
@@ -809,6 +813,16 @@ svg {
   animation-delay: 5s;
 }
 
+.map__marker--jl {
+  left: 26%;
+  top: 28%;
+}
+
+.map__marker--semen {
+  left: 5%;
+  top: 80%;
+}
+
 .map__marker--sun {
   left: 48%;
   top: 49%;
@@ -890,6 +904,15 @@ svg {
   animation-delay: 5s;
 }
 
+.map__marker--library2 {
+  left: 90%;
+  top: 60%;
+}
+
+.map__marker-library2:after {
+  animation-delay: 5s;
+}
+
 .map__marker-info {
   display: none;
   left: 50%;
@@ -913,7 +936,7 @@ svg {
   background-color:  rgba(0, 0, 0, 0.7);
   margin-left: auto;
   margin-right: auto;
-  height: 365px;
+  height: relative;
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   color: #7e7e7e;
