@@ -25,17 +25,18 @@
                 <h1>Graduation Ceremony Control Panel</h1>
             </div>
             <div class="row">
-                <div class="col-sm">
-                    <div id="TimelineContainer"> 
+                <div class="col-10">
+                    <div id="TimelineContainer">
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-2">
                     <div>
                         <h5>Ceremony Control</h5>
                         <label for=ceremony-state>Ceremony State</label>
                         <select id="ceremony-state">
                             <option value="idle">閒置</option>
                             <option value="tassel">撥穗儀式</option>
+                            <option value="puzzle">合照</option>
                         </select>
                         <button class="btn btn-outline-success" id="ceremony-state">Submit</button>
                     </div>
@@ -44,6 +45,24 @@
                         <label for="input-tassel-num">Tassel number</label>
                         <button class="btn btn-outline-success" id="btn-tassel-prev">Previous</button>
                         <button class="btn btn-outline-success" id="btn-tassel-next">Next</button>
+                    </div>
+                    <div id="broadcaster-control">
+                        <h5>Switch broadcaster</h5>
+                        <select id="new-broadcaster">
+                        </select>
+                        <button class="btn btn-outline-success" id="stop">Clear all</button>
+                        <button class="btn btn-outline-success" id="switch">Switch</button>
+                    </div>
+                    <div id="music-control">
+                        <h5>Music Control</h5>
+                        <input type="range" min="0" max="100" value="20" id="music-value" style="width:200px;">
+                        <span id="volume">20</span>
+                    </div>
+                    <div id="">
+                        <h5>Puzzle Control</h5>
+                        <input type="number" id="input-puzzle">
+                        <button class="btn btn-outline-success" id="btn-puzzle">Zero</button>
+                        <button class="btn btn-outline-success" id="btn-release">Release</button>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
-const broadcastConns = {};  // broadcaster to watchers
-const watchConns = {};  // watcher to broadcasters
+let broadcastConns = {};  // broadcaster to watchers
+let watchConns = {};  // watcher to broadcasters
 let broadcasting = false;
+
 const config = {
     iceServers: [
         {
@@ -9,31 +10,41 @@ const config = {
     ]
 };
 
-function close_all_peer_connection(){
+function switch_broadcaster() {
+    if (broadcasting)
+        terminate_broadcasting();
+    start_broadcasting();
+}
+
+function close_all_peer_connection() {
     terminate_broadcasting();
-    for (const id in watchConns){
-        watchConns[value].close();
+    for (const id in watchConns) {
+        watchConns[id].close();
     }
     watchConns = {}
 }
 
-function terminate_broadcasting(){
-    if (broadcasting){
-        for (const id in broadcastConns){
+function terminate_broadcasting() {
+    if (broadcasting) {
+        for (const id in broadcastConns) {
             broadcastConns[id].close();
             delete broadcastConns[id];
         }
         socket.emit("terminate_broadcasting");
     }
+    broadcasting = false;
 }
 
-function start_broadcasting(){
+function start_broadcasting() {
     broadcasting = true;
+    console.log("connection")
+    console.log(self_id)
     socket.emit("broadcaster", self_id);
 }
 
-function init(socket, self_id, offer_callback) {
+function init(socket, sid, offer_callback) {
     // broadcaster receive from watcher
+    //self_id = sid;
     socket.on("watcher", id => {
         // We create a new RTCPeerConnection every time a new client joins and save it in our broadcastConns object.
         const peerConnection = new RTCPeerConnection(config);
@@ -104,11 +115,11 @@ function init(socket, self_id, offer_callback) {
 
     // terminate request from broadcaster
     socket.on("disconnectPeer", (id, who) => {
-        if (who == "watcher"){
+        if (who == "watcher") {
             watchConns[id].close();
             delete watchConns[id];
         }
-        else if (who == "broadcaster"){
+        else if (who == "broadcaster") {
             broadcastConns[id].close();
             delete broadcastConns[id];
         }

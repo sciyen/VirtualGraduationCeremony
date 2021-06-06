@@ -10,18 +10,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link href="/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
     <ul class="nav justify-content-center nav-tabs" id="navTab" role="tablist">
-        <a id="ceremony-state"></a>
+        <!--<a id="ceremony-state"></a>-->
+        <a>登入者 : </a>
         <a id="username"></a>
         <a class="navbar-brand">
             <i class="fas fa-meteor"></i>
@@ -32,15 +35,15 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" id="info-tab" data-toggle="tab" aria-controls="info" aria-selected="true"
-                href="#info">Info</a>
+                href="#info">畢典流程 Timeline</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="ceremony-tab" data-toggle="tab" aria-controls="ceremony" aria-selected="true"
-                href="#ceremony">Ceremony</a>
+                href="#ceremony">典禮會場 Ceremony</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="contact-tab" data-toggle="tab" aria-controls="contact" aria-selected="true"
-                href="#contact">Contact</a>
+                href="#contact">Puzzle</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="btn-logout">Logout</a>
@@ -51,48 +54,40 @@
     <div class="tab-content">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <h1> 出席狀態 </h1>
+            <p>討論區與疑難排解
+                <a href="https://meet.google.com/owa-yrsy-but">Google Meet</a>
+            </p>
             <div class="container row w-80 mx-auto" id="present-container"></div>
         </div>
 
         <div class="tab-pane fade show" id="info" role="tabpanel" aria-labelledby="info-tab">
             <h1> 流程 </h1>
             <div class="container row mx-auto">
-                <div class="col-4">
-                    <div id="TimelineContainer"></div> 
+                <div class="col-12">
+                    <div id="TimelineContainer"></div>
                 </div>
-                <div class="col-8"></div>
+                <!--<div class="col-8"></div>-->
             </div>
         </div>
 
         <div class="tab-pane fade" id="ceremony" role="tabpanel" aria-labelledby="ceremony-tab">
-            <h1> 撥穗儀式 </h1>
             <div class="container w-100" id="tassel-container">
                 <div class="row p-2" id="tassel-teacher">
                     <div class="col" id="tassel-essay-1">
-                        撥穗詞<br>
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
+                        <h1> 撥穗儀式 </h1>
+                        <p></p>
                     </div>
                     <div class="col">
-                        <div class="mx-auto">
-                            <video playsinline autoplay muted id="teacher-cam"
+                        <div class="mx-auto" id="teacher-container">
+                            <video playsinline autoplay id="teacher-cam"
                                 poster="https://static.vecteezy.com/system/resources/previews/000/644/740/non_2x/vector-scientist-or-professor-icon.jpg"></video>
+                            <h4 id="teacher-name"></h4>
                         </div>
                     </div>
                     <div class="col" id="tassel-essay-2">
-                        撥穗詞<br>
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
-                        sjgslkjrgjklrgjfdkjmgklnsfglrkgnlkrmg
                     </div>
                 </div>
                 <div>
-
                 </div>
                 <div class="row p-2 w-100" id="tassel-student">
                 </div>
@@ -100,20 +95,82 @@
         </div>
 
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            <div class="info_container">
-                <p> Author: Yencheng Chu</p>
-                <p> Github: https://github.com/sciyen/CTF-Scoreboard</p>
-                <p> Bugs Report: a885566885566@gmail.com</p>
+            <div class="container hide" id="puzzle-container">
+                <h1> Puzzle </h1>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <img type='range' src="https://i.imgur.com/E7DD84om.jpg">
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row">
+                    <input type='range' id="input-puzzle" min=0 max=100 value=0>
+                    </input>
+                </div>
+                <div class="row">
+                    <div class="col hide" id="puzzle-img-0">
+                        <h4>剛入學時候的運動會!</h4>
+                        <img class='' src="https://i.imgur.com/OanG6tvm.jpg">
+                    </div>
+                    <div class="col hide" id="puzzle-img-1">
+                        <h4>沙控!</h4>
+                        <img class='' src="https://i.imgur.com/tXII64Mm.jpg">
+                    </div>
+                    <div class="col hide" id="puzzle-img-2">
+                        <h4>單車節</h4>
+                        <img class='' src="https://i.imgur.com/oaRmyzym.jpg">
+                    </div>
+                    <div class="col hide" id="puzzle-img-3">
+                        <h4>音樂會</h4>
+                        <img class='' src="https://i.imgur.com/CJQBR9Om.jpg">
+                    </div>
+                    <div class="col hide" id="puzzle-img-4">
+                        <h4>面試</h4>
+                        <img class='' src="https://i.imgur.com/F01oY5bm.jpg">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="div-cam-self">
-        <video playsinline autoplay muted id="cam-self" poster="/img/student_offline.png"></video>
-        <div>
-            <button id="btn-cam-switch">Cam</button>
-            <button id="btn-audio-switch">Audio</button>
+    <div id="div-cam-master">
+        <div id="div-cam-master1">
+            <video playsinline autoplay muted id="cam-master1" poster="/img/student_offline.png"></video>
+            <h4></h4>
         </div>
+        <div id="div-cam-master1">
+            <video playsinline autoplay muted id="cam-master2" poster="/img/student_offline.png"></video>
+            <h4></h4>
+        </div>
+        <div>
+            <button id="btn-all-hide" class="btn btn-light"
+                onclick="$('#div-cam-master').hide(); $('#div-cam-show').show();">隱藏全部</button>
+            <button id="btn-self-hide" class="btn btn-light" onclick="$('#div-cam-self').toggle();">顯示/隱藏個人</button>
+        </div>
+        <div id="div-cam-self">
+            <video playsinline autoplay muted id="cam-self" poster="/img/student_offline.png"></video>
+            <div>
+                <!--<button id="btn-self-hide" onclick="$('#div-cam-self').hide(); $('#div-cam-show').show();">顯示/隱藏個人</button>-->
+                <!--<button id="btn-self-mute"><i class="bi bi-volume-mute"></i></button>-->
+            </div>
+            <div id="div-vid-select" style="width: 300px">
+                <select id="videoSource" class="form-control"></select>
+            </div>
+            <div id="div-aud-select" style="width: 300px">
+                <select id="audioSource" class="form-control"></select>
+            </div>
+            <div id="div-music">
+                <audio controls autoplay id="bg-music">
+                    <source src="/audio/background_music.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <div id="div-cam-show" style="display: none;">
+        <button id="btn-self-show" class="btn btn-light"
+            onclick="$('#div-cam-master').show(); $('#div-cam-show').hide();">顯示</button>
     </div>
 
     <script src="/livestream.js"></script>

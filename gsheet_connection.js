@@ -30,7 +30,8 @@ function getTasselData(callback) {
                 tassel.push(
                     {
                         "Teacher": row[0],
-                        "Students": row.slice(1)
+                        "Students": row.slice(2),
+                        "Essay": row[1]
                     })
             }
         })
